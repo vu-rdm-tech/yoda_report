@@ -1,0 +1,5 @@
+certifi==2020.6.20
+python-dateutil==2.8.1
+six==1.15.0
+swagger-client==1.0.0
+urllib3==1.25.9
