@@ -3,6 +3,7 @@ from irods.models import Collection, DataObject
 import logging
 from datetime import datetime
 from setup_session import setup_session
+import re
 
 logger = logging.getLogger('irods_tasks')
 
@@ -155,6 +156,9 @@ class IrodsData():
                 stats['datasets'][dataset] = {}
                 stats['datasets'][dataset]['size'], stats['datasets'][dataset]['count'] = self.query_collection_stats(
                     full_path=f'/{self.session.zone}/{root}/{path}/{dataset}%')
+                stats['datasets'][dataset]['original_size'], stats['datasets'][dataset]['original_count'] = self.query_collection_stats(
+                    full_path=f'/{self.session.zone}/{root}/{path}/{dataset}/original%')
+                stats['datasets'][dataset]['create_date'] = datetime.fromtimestamp(int(re.search('\[(.*?)\]', dataset).group(1))).isoformat()
                 try:
                     status = col.metadata.get_one(
                         'org_vault_status').value  # won't be set on status "approved for publication"
