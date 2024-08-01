@@ -150,7 +150,7 @@ class IrodsData():
         if path.startswith('vault-'):
             stats['datasets'] = {}
             coll = self.session.collections.get(f'/{self.session.zone}/{root}/{path}')
-            for col in coll.subcollections:  # datasets
+            for col in coll.subcollections:  # datasets, add lots of error catching here to avoid script failure on missing metadata
                 dataset = col.name
                 stats['datasets'][dataset] = {}
                 stats['datasets'][dataset]['size'], stats['datasets'][dataset]['count'] = self.query_collection_stats(
