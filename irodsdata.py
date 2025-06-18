@@ -174,7 +174,7 @@ class IrodsData():
                         stats['datasets'][dataset]['doi'] = col.metadata.get_one('org_publication_versionDOI').value
                     except:
                         stats['datasets'][dataset]['doi'] = ''
-                    stats['datasets'][dataset]['keywords'] = col.metadata.get('Keyword',{})
+                    stats['datasets'][dataset]['keywords'] = col.metadata.get_all('Keyword',{})
                     try:
                         stats['datasets'][dataset]['publication_date'] = col.metadata.get_one(
                             'org_publication_publicationDate').value   
