@@ -10,7 +10,6 @@ logger = logging.getLogger('irods_tasks')
 
 def handle_exception():
     logger.warning('script failed with an error')
-    logging.exception('')
     raise SystemExit(0)
 
 
@@ -71,8 +70,8 @@ class IrodsData():
             print(interactive)
             self.session = setup_session(interactive=interactive)
             self.get_home_collections()  # try once to see if we are logged in
-        except:
-            logger.error('could not get collections and groups, probably an authentication error')
+        except Exception:
+            logger.error('could not get collections and groups, probably an authentication error', exc_info=True)
             handle_exception()
         return True
 
