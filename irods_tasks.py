@@ -21,7 +21,7 @@ def setup_logging():
     logger.setLevel(logging.INFO)
     return logger
 
-def collect():
+def collect(interactive=False):
     filename = f'yodastats-{year}{week}.json'
     stats_file = f'{DATA_DIR}data/{filename}'
     archived_stats_file = f'{DATA_DIR}data/archived/{filename}'
@@ -35,7 +35,7 @@ def collect():
         logger.info(f'stats already collected and processed from {archived_stats_file}')
     else:
         logger.info('start data collection')
-        irodsdata.get_session()
+        irodsdata.get_session(interactive)
         data=irodsdata.collect()
         data['collected'] = today_str
         logger.info(f'write stats to {stats_file}')
@@ -46,4 +46,4 @@ def collect():
     logger.info('script finished')
 
 logger = setup_logging()
-collect()
+collect(interactive=True)
