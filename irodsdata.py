@@ -64,10 +64,11 @@ class IrodsData():
         self.session = None
         logger.info('irods session closed')
 
-    def get_session(self):
+    def get_session(self, interactive=False):
         try:
             logger.info('setup irods session')
-            self.session = setup_session()
+            print(interactive)
+            self.session = setup_session(interactive=interactive)
             self.get_home_collections()  # try once to see if we are logged in
         except:
             logger.error('could not get collections and groups, probably an authentication error')
@@ -91,7 +92,7 @@ class IrodsData():
     def get_member_count(self, group_name):
         internal = 0
         external = 0
-        for user in self.session.user_groups.get(group_name).members:
+        for user in self.session.groups.get(group_name).members:
             if user.name.endswith(("vu.nl", "acta.nl")):
                 internal += 1
             else:
@@ -112,7 +113,7 @@ class IrodsData():
             if path.startswith('research-') or path.startswith('datamanager-'):
                 groupname = path
                 groups[groupname] = {}
-                group_obj = self.session.user_groups.get(groupname)
+                group_obj = self.session.groups.get(groupname)
                 groups[groupname]['category'] = group_obj.metadata.get_one('category').value
                 try:
                     groups[groupname]['data_classification'] = group_obj.metadata.get_one('data_classification').value
@@ -122,7 +123,7 @@ class IrodsData():
                 groups[groupname]['members'] = member_names
                 groups[groupname]['read_members'] = []
                 if path.startswith('research-'):
-                    read_group_obj = self.session.user_groups.get(groupname.replace('research-', 'read-', 1))
+                    read_group_obj = self.session.groups.get(groupname.replace('research-', 'read-', 1))
                     read_member_names = [user.name for user in read_group_obj.members]
                     groups[groupname]['read_members'] = read_member_names
         return groups
@@ -174,7 +175,9 @@ class IrodsData():
                         stats['datasets'][dataset]['doi'] = col.metadata.get_one('org_publication_versionDOI').value
                     except:
                         stats['datasets'][dataset]['doi'] = ''
-                    #stats['datasets'][dataset]['keywords'] = col.metadata.get_all('Keyword')
+                    stats['datasets'][dataset]['keywords'] = []
+                    for imeta in col.metadata.get_all('Keyword'):
+                        stats['datasets'][dataset]['keywords'].append(imeta.value)
                     try:
                         stats['datasets'][dataset]['publication_date'] = col.metadata.get_one(
                             'org_publication_publicationDate').value   
