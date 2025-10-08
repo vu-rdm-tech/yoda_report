@@ -10,6 +10,7 @@ logger = logging.getLogger('irods_tasks')
 
 def handle_exception():
     logger.warning('script failed with an error')
+    logging.exception('')
     raise SystemExit(0)
 
 
