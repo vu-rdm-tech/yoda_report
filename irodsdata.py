@@ -147,8 +147,8 @@ class IrodsData():
 
     def get_stats(self, path, root='home'):
         stats = {}
-        stats['size'], stats['count'] = self.query_collection_stats(full_path=f'/{self.session.zone}/{root}/{path}')
-        stats['newest'] = self.query_collection_newest(full_path=f'/{self.session.zone}/{root}/{path}')
+        stats['size'], stats['count'] = self.query_collection_stats(full_path=f'/{self.session.zone}/{root}/{path}/')
+        stats['newest'] = self.query_collection_newest(full_path=f'/{self.session.zone}/{root}/{path}/')
         if path.startswith('vault-'):
             stats['datasets'] = {}
             coll = self.session.collections.get(f'/{self.session.zone}/{root}/{path}')
