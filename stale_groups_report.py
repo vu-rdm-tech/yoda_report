@@ -37,6 +37,3 @@ with open(reportfile, "w") as f:
                 list['size'].append(size)
                 f.write(f"{collection},{newest},{size}\n")
                 print(collection, newest, size)
-
-
-
