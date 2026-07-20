@@ -46,4 +46,4 @@ def collect(interactive=False):
     logger.info('script finished')
 
 logger = setup_logging()
-collect(interactive=True)
+collect(interactive=False)
