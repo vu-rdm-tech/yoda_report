@@ -50,10 +50,10 @@ class IrodsData():
         internal = 0
         external = 0
         for name in research_group_members:
-            if ("@" in name) and ("@vu.nl" not in name):
-                external += 1
-            else:
+            if name.endswith(("vu.nl", "acta.nl")):
                 internal += 1
+            else:
+                external += 1
         self.data['misc']['internal_users_total'] = internal
         self.data['misc']['external_users_total'] = external
         self.data['misc']['users_total'] = internal + external
